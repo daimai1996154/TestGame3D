@@ -18,6 +18,7 @@ public class GamePlayCanvas : MonoBehaviour
     private void Awake()
     {
         GameController.stopHandMoveEvent += OnStopMoveHand;
+        GameController.openBtnRotateEvent += OnRotate;
     }
     // Start is called before the first frame update
     void Start()
@@ -37,7 +38,7 @@ public class GamePlayCanvas : MonoBehaviour
         m_tween.Kill();
         m_handImage.gameObject.SetActive(false);
         //
-        OnRotate();
+        //OnRotate();
     }
     
     private void OnRotate()
@@ -62,8 +63,9 @@ public class GamePlayCanvas : MonoBehaviour
         float value = 0;
         m_tween = DOTween.To(() => value, x => value = x, 1f, 5f).OnUpdate(() => {
             m_imgProcess.fillAmount = value;
-        }).OnComplete(() => {
+        }).SetEase(Ease.Linear).OnComplete(() => {
             m_objProcess.SetActive(false);
+            GameController.StopBlender();
         });
     }
 }
